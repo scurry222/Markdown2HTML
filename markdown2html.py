@@ -22,7 +22,7 @@ def main(argv):
         f = open(argv[1], "r")
         exit(0)
     except IOError:
-        print("Missing {}".format(argv[1]))
+        sys.stderr.write("Missing {}\n".format(argv[1]))
     exit(1)
 
 if __name__ == "__main__":
