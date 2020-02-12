@@ -6,6 +6,7 @@
 """
 import sys
 import os
+import fnmatch
 
 
 def main(argv):
@@ -13,11 +14,11 @@ def main(argv):
                 first argument is the name of the markdown file.
                 second argument is the output file name.
     """
-    if len(argv) < 2:
+    if len(argv) < 2 or fnmatch.fnmatchcase(argv[1], ".md"):
         sys.stderr.write("Usage: ./markdown2html.py README.md README.html")
         exit(1)
     try:
-        f = open("README.md", "r")
+        f = open(argv[1], "r")
         exit(0)
     except IOError:
         print("Missing {}".format(argv[1]))
