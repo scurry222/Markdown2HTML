@@ -19,8 +19,8 @@ def main(argv):
     try:
         f = open("README.md", "r")
         exit(0)
-    except Exception:
-        print("Missing <filename>")
+    except IOError:
+        print("Missing {}".format(argv[1]))
         exit(1)
 
 if __name__ == "__main__":
