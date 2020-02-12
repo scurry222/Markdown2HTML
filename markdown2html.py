@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """ Markdown is awesome! All your README.md are made in Markdown,
     but do you know how Github are rendering them?
 
