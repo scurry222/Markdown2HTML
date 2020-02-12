@@ -10,11 +10,12 @@ import fnmatch
 
 
 def main(argv):
-    """ main - script that ttakes an argument 2 strings:
+    """ main - script that takes an argument 2 strings:
                 first argument is the name of the markdown file.
                 second argument is the output file name.
     """
-    if len(argv) < 3 or not fnmatch.fnmatchcase(argv[1], "*.md"):
+    if len(argv) < 3 or not fnmatch.fnmatchcase(argv[1], "*.md") or not\
+         fnmatch.fnmatchcase(argv[2], "*.html"):
         sys.stderr.write("Usage: ./markdown2html.py README.md README.html\n")
         exit(1)
     try:
