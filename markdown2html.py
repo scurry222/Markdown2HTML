@@ -15,7 +15,7 @@ def main(argv):
                 second argument is the output file name.
     """
     if len(argv) < 2 or fnmatch.fnmatchcase(argv[1], ".md"):
-        sys.stderr.write("Usage: ./markdown2html.py README.md README.html")
+        sys.stderr.write("Usage: ./markdown2html.py README.md README.html\n")
         exit(1)
     try:
         f = open(argv[1], "r")
