@@ -15,11 +15,23 @@ def main(argv):
                 second argument is the output file name.
     """
     if len(argv) < 3 or not fnmatch.fnmatchcase(argv[1], "*.md") or not\
-         fnmatch.fnmatchcase(argv[2], "*.html"):
+            fnmatch.fnmatchcase(argv[2], "*.html"):
         sys.stderr.write("Usage: ./markdown2html.py README.md README.html\n")
         exit(1)
     try:
-        f = open(argv[1], "r")
+        d = {}
+        lines = []
+        with open(argv[1], "r") as fmd:
+            for i, line in enumerate(fmd):
+                key, value = i, len(line) - len(line.lstrip("#"))
+                d[key] = value
+                line = line.lstrip("# ")
+                lines.append(line.rstrip("\n"))
+        with open(argv[2], "w+") as fhtml:
+            for k, v in d.items():
+                if d[k] and 0 < d[k] < 7:
+                    fhtml.write("<h{}>".format(d[k]) + lines[k] +
+                                "</h{}>\n".format(d[k]))
         exit(0)
     except IOError:
         sys.stderr.write("Missing {}\n".format(argv[1]))
