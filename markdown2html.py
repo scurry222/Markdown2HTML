@@ -7,15 +7,14 @@
 import sys
 import os
 import fnmatch
+import re
 
 
-def write_list(fhtml, line_dict, k, lines, tag):
-    while line_dict[k] and line_dict[k] == tag:
-        fhtml.write("<li>" + lines[k] + "</li>" + "\n")
-        k += 1
-    fhtml.write("</{}>\n".format(line_dict[k-1]))
-    return k
-
+def inline_tags(line, group):
+    md_inline = {"**": "b", "__": "em"}
+    line = line.replace(group, "<" + md_inline[group] + ">", 1)
+    line = line.replace(group, "<" + "/" + md_inline[group] + ">", 1)
+    return line
 
 def main(argv):
     """ main - script that takes an argument 2 strings:
@@ -28,6 +27,7 @@ def main(argv):
         exit(1)
     try:
         md = {1: "h1", 2: "h2", 3: "h3", 4: "h4", 5: "h5", 6: "h6", "-": "ul", "*": "ol"}
+        inline = re.compile(".*([**].*[**]|[__].*[__]).*")
         line_dict = {}
         lines = []
         listing = 0
@@ -35,6 +35,13 @@ def main(argv):
         with open(argv[2], "w+") as fhtml, open(argv[1], "r") as fmd:
             fmd = fmd.readlines()
             for i, line in enumerate(fmd):
+                while inline.match(line):
+                    # print("called!")
+                    match = inline.match(line)
+                    group = match.group(1)
+                    # print(match, group)
+                    line = inline_tags(line, group)
+                    # print(line)
                 if len(line) - len(line.lstrip("#")) > 0:
                     tag = md[len(line) - len(line.lstrip("#"))]
                     line = line.lstrip("# ")
