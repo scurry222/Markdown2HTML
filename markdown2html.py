@@ -8,7 +8,20 @@ import sys
 import os
 import fnmatch
 import re
+import hashlib
 
+
+def inline_tags2(line, group):
+    if group[0] == "[":
+        hashed = hashlib.md5(group.encode())
+        # print(str(hashed))
+        return line.replace(group, hashed.hexdigest())
+    else:
+        new_group = group.replace("C", "")
+        new_group = new_group.replace("c", "")
+        new_group = new_group.replace("(", "")
+        new_group = new_group.replace(")", "")
+        return line.replace(group, new_group)
 
 def inline_tags(line, group):
     md_inline = {"**": "b", "__": "em"}
@@ -28,6 +41,8 @@ def main(argv):
     try:
         md = {1: "h1", 2: "h2", 3: "h3", 4: "h4", 5: "h5", 6: "h6", "-": "ul", "*": "ol"}
         inline = re.compile(".*([**].*[**]|[__].*[__]).*")
+        inline2 = re.compile(".*(\[\[.*\]\]).*")
+        inline3 = re.compile(".*(\(\(.*\)\)).*")
         line_dict = {}
         lines = []
         listing = 0
@@ -38,9 +53,17 @@ def main(argv):
                 while inline.match(line):
                     # print("called!")
                     match = inline.match(line)
-                    group = match.group(1)
                     # print(match, group)
-                    line = inline_tags(line, group)
+                    line = inline_tags(line, match.group(1))
+                    # print(line)
+                while inline2.match(line):
+                    match = inline2.match(line)
+                    group = match.group(1)
+                    line = inline_tags2(line, group)
+                if inline3.match(line):
+                    match = inline3.match(line)
+                    group = match.group(1)
+                    line = inline_tags2(line, group)
                     # print(line)
                 if len(line) - len(line.lstrip("#")) > 0:
                     tag = md[len(line) - len(line.lstrip("#"))]
