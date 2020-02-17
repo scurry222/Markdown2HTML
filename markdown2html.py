@@ -13,7 +13,9 @@ import hashlib
 
 def inline_tags2(line, group):
     if group[0] == "[":
-        hashed = hashlib.md5(group.encode())
+        new_group = group.replace("[", "", 2)
+        new_group = new_group.replace("]", "", 2)
+        hashed = hashlib.md5(new_group.encode('utf-8'))
         # print(str(hashed))
         return line.replace(group, hashed.hexdigest())
     else:
