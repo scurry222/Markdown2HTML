@@ -42,7 +42,7 @@ def main(argv):
         exit(1)
     try:
         md = {1: "h1", 2: "h2", 3: "h3", 4: "h4", 5: "h5", 6: "h6", "-": "ul", "*": "ol"}
-        inline = re.compile(".*([**].*[**]|[__].*[__]).*")
+        inline = re.compile(".*([*]{2}.*[*]{2}|[_]{2}.*[_]{2}).*")
         inline2 = re.compile(".*(\[\[.*\]\]).*")
         inline3 = re.compile(".*(\(\(.*\)\)).*")
         line_dict = {}
