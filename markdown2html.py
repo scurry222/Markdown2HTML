@@ -19,8 +19,8 @@ def inline_tags2(line, group):
     else:
         new_group = group.replace("C", "")
         new_group = new_group.replace("c", "")
-        new_group = new_group.replace("(", "")
-        new_group = new_group.replace(")", "")
+        new_group = new_group.replace("(", "", 2)
+        new_group = new_group.replace(")", "", 2)
         return line.replace(group, new_group)
 
 def inline_tags(line, group):
@@ -60,7 +60,7 @@ def main(argv):
                     match = inline2.match(line)
                     group = match.group(1)
                     line = inline_tags2(line, group)
-                if inline3.match(line):
+                while inline3.match(line):
                     match = inline3.match(line)
                     group = match.group(1)
                     line = inline_tags2(line, group)
